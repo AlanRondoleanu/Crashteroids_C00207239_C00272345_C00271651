@@ -130,4 +130,13 @@ public class TestSuite
         game.NewGame();
         Assert.AreEqual(0, game.score);
     }
+
+    [UnityTest]
+    public IEnumerator AsteroidsMovedOffTheBottomAreDestroyed()
+    {
+        GameObject asteroid = game.GetSpawner().SpawnAsteroid();
+        asteroid.transform.position = new Vector3(0, -5, 0);
+        yield return new WaitForSeconds(0.5f);
+        UnityEngine.Assertions.Assert.IsNull(asteroid);
+    }
 }
