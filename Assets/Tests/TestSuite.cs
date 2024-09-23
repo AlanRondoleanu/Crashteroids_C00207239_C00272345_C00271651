@@ -122,4 +122,12 @@ public class TestSuite
         yield return new WaitForSeconds(0.1f);
         Assert.LessOrEqual( ship.transform.position.x,40);
     }
+
+    [Test]
+    public void NewGameSetsScoreToZero()
+    {
+        game.score = 2;
+        game.NewGame();
+        Assert.AreEqual(0, game.score);
+    }
 }
