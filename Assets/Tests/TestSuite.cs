@@ -102,4 +102,24 @@ public class TestSuite
         yield return new WaitForSeconds(0.1f);
         Assert.Greater(ship.transform.position.x, initialXPos);
     }
+
+    [UnityTest]
+    public IEnumerator CheckStaysInBoundsRight()
+    {
+        Ship ship = game.GetShip();
+        ship.transform.position = new Vector3(-40,0,0);
+        ship.MoveRight();
+        yield return new WaitForSeconds(0.1f);
+        Assert.GreaterOrEqual(ship.transform.position.x,-40);
+    }
+
+    [UnityTest]
+    public IEnumerator CheckStaysInBoundsLeft()
+    {
+        Ship ship = game.GetShip();
+        ship.transform.position = new Vector3(40, 0, 0);
+        ship.MoveLeft();
+        yield return new WaitForSeconds(0.1f);
+        Assert.LessOrEqual( ship.transform.position.x,40);
+    }
 }
