@@ -39,5 +39,22 @@ public class TestSuite
         Assert.True(game.isGameOver);
 
     }
-   
+
+    [Test]
+    public void NewGameRestartsGame()
+    {
+        game.isGameOver = true;
+        game.NewGame();
+        Assert.False(game.isGameOver);
+    }
+
+    [UnityTest]
+    public IEnumerator LaserMovesUp()
+    {
+        GameObject laser = game.GetShip().SpawnLaser();
+        float initialYPos = laser.transform.position.y;
+        yield return new WaitForSeconds(0.1f);
+        Assert.Greater(laser.transform.position.y, initialYPos);
+    }
+
 }
