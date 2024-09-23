@@ -127,4 +127,9 @@ public class Ship : MonoBehaviour
         mesh.enabled = true;
         isDead = false;
     }
+
+    public void ApplySpeedPowerup()
+    {
+
+    }
 }
