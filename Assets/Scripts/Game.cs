@@ -42,6 +42,7 @@ public class Game : MonoBehaviour
     [SerializeField] private Text scoreText;
     [SerializeField] private GameObject titleText;
     [SerializeField] private Spawner spawner;
+    [SerializeField] private GameObject powerUp;
 
     private static Game instance;
 
@@ -93,5 +94,10 @@ public class Game : MonoBehaviour
     public Spawner GetSpawner()
     {
         return spawner.GetComponent<Spawner>();
+    }
+
+    public void SpawnPowerUp(Vector2 t_location)
+    {
+        Instantiate(powerUp, t_location, Quaternion.identity);
     }
 }

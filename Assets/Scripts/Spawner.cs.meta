@@ -3,7 +3,13 @@ guid: 1139f9ab85cdfb247ad7184c77a98646
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - asteroid1: {instanceID: 0}
+  - asteroid2: {instanceID: 0}
+  - asteroid3: {instanceID: 0}
+  - asteroid4: {instanceID: 0}
+  - powerUp: {fileID: 3024241309237130633, guid: ce614361ef220df45b07cfc2b5bd177d,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

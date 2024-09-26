@@ -139,4 +139,14 @@ public class TestSuite
         yield return new WaitForSeconds(0.5f);
         UnityEngine.Assertions.Assert.IsNull(asteroid);
     }
+
+    [UnityTest]
+    public IEnumerator PowerUpTest()
+    {
+        Ship ship = game.GetShip();
+        game.SpawnPowerUp(ship.transform.position);
+        yield return new WaitForSeconds(0.1f);
+        Debug.Log(ship.speed);
+        Assert.AreNotEqual(5, ship.speed);
+    }
 }
