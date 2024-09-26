@@ -34,6 +34,7 @@ public class Asteroid : MonoBehaviour
 {
     public float speed = 1;
     private readonly float maxY = -5;
+    public GameObject explosion;
 
     private void Update()
     {
@@ -56,5 +57,10 @@ public class Asteroid : MonoBehaviour
             Game.GameOver();
             Destroy(gameObject);
         }
+    }
+
+    private void OnDestroy()
+    {
+        Instantiate(explosion, gameObject.transform.position, Quaternion.identity);
     }
 }
