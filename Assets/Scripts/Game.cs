@@ -80,10 +80,11 @@ public class Game : MonoBehaviour
         gameOverText.enabled = false;
     }
 
-    public static void AsteroidDestroyed()
+    public static void AsteroidDestroyed(Vector3 position)
     {
         instance.score++;
         instance.scoreText.text = $"Score: {instance.score}";
+        GameObject.FindObjectOfType<Game>().SpawnPowerUp(position);
     }
 
     public Ship GetShip()
@@ -96,7 +97,7 @@ public class Game : MonoBehaviour
         return spawner.GetComponent<Spawner>();
     }
 
-    public void SpawnPowerUp(Vector2 t_location)
+    public void SpawnPowerUp(Vector3 t_location)
     {
         Instantiate(powerUp, t_location, Quaternion.identity);
     }

@@ -143,16 +143,6 @@ public class TestSuite
     }
 
     [UnityTest]
-    public IEnumerator PowerUpTest()
-    {
-        Ship ship = game.GetShip();
-        game.SpawnPowerUp(ship.transform.position);
-        yield return new WaitForSeconds(0.1f);
-        Debug.Log(ship.speed);
-        Assert.AreNotEqual(5, ship.speed);
-    }
-
-    [UnityTest]
     public IEnumerator PowerUpSpawns()
     {
         Ship ship = game.GetShip();
@@ -191,21 +181,38 @@ public class TestSuite
     public IEnumerator PlayerGetsBuffed()
     {
         Ship ship = game.GetShip();
-        float playerSpeed = ship.speed;
+        float playerSpeed = ship.speed.Speed;
         game.SpawnPowerUp(ship.transform.position);
         yield return new WaitForSeconds(1f);
-
-        Assert.AreNotEqual(playerSpeed, ship.speed);
+        float newSpeed = game.GetShip().speed.Speed;
+        Assert.AreNotEqual(playerSpeed, newSpeed);
     }
 
     [UnityTest]
     public IEnumerator PlayerBuffExpires()
     {
         Ship ship = game.GetShip();
-        float playerSpeed = ship.speed;
+        float playerSpeed = ship.speed.Speed;
         game.SpawnPowerUp(ship.transform.position);
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(0.1f);
+        Assert.AreNotEqual(playerSpeed, ship.speed.Speed);
 
-        Assert.AreEqual(playerSpeed, ship.speed);
+        yield return new WaitForSeconds(5f);
+        Assert.AreEqual(playerSpeed, ship.speed.Speed);
+    }
+
+    public IEnumerator PlayerBuffDoesentStack()
+    {
+        Ship ship = game.GetShip();
+        game.SpawnPowerUp(ship.transform.position);
+        yield return new WaitForSeconds(1f);
+        float playerSpeed = ship.speed.Speed;
+
+        game.SpawnPowerUp(ship.transform.position);
+        game.SpawnPowerUp(ship.transform.position);
+        game.SpawnPowerUp(ship.transform.position);
+
+        float newPlayerSpeed = ship.speed.Speed;
+        Assert.AreEqual(playerSpeed, newPlayerSpeed);
     }
 }

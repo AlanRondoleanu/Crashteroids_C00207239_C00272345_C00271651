@@ -31,16 +31,28 @@
 using System.Collections;
 using UnityEngine;
 
+public class ShipSpeed
+{
+    public float Speed { get; set; }
+
+    public ShipSpeed(float speed)
+    {
+        Speed = speed;
+    }
+}
+
 public class Ship : MonoBehaviour
 {
     public bool isDead = true;
-    public float speed = 1;
+    public ShipSpeed speed;
     public bool canShoot = true;
 
     [SerializeField] private  MeshRenderer mesh;
     [SerializeField] private GameObject explosion;
     [SerializeField] private GameObject laser;
     [SerializeField] private Transform shotSpawn;
+
+    private PowerupEffect powerupEffect;
 
     private AudioSource audioSource;
     private readonly float maxLeft = 40;
@@ -49,10 +61,15 @@ public class Ship : MonoBehaviour
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        speed = new ShipSpeed(1);
     }
 
     private void Update()
     {
+
+        Debug.Log(speed.Speed);
+
+
         if (isDead)
         {
             return;
@@ -63,6 +80,8 @@ public class Ship : MonoBehaviour
             ShootLaser();
         }
 
+        updatePowerup();
+
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             MoveLeft();
@@ -72,6 +91,19 @@ public class Ship : MonoBehaviour
         {
             MoveRight();
         }
+    }
+
+    private void updatePowerup()
+    {
+        if (powerupEffect != null)
+        {
+            powerupEffect.Update(Time.deltaTime);
+            if (!powerupEffect.isActive())
+            {
+                powerupEffect = null;
+            }
+        }
+
     }
 
     public void ShootLaser()
@@ -98,7 +130,7 @@ public class Ship : MonoBehaviour
 
     public void MoveLeft()
     {
-        transform.Translate(-Vector3.left * Time.deltaTime * speed);
+        transform.Translate(-Vector3.left * Time.deltaTime * speed.Speed);
         if (transform.localPosition.x > maxLeft)
         {
             transform.localPosition = new Vector3(maxLeft, 0, 0);
@@ -107,7 +139,7 @@ public class Ship : MonoBehaviour
 
     public void MoveRight()
     {
-        transform.Translate(-Vector3.right * Time.deltaTime * speed);
+        transform.Translate(-Vector3.right * Time.deltaTime * speed.Speed);
         if (transform.localPosition.x < maxRight)
         {
              transform.localPosition = new Vector3(maxRight, 0, 0);
@@ -130,6 +162,9 @@ public class Ship : MonoBehaviour
 
     public void ApplySpeedPowerup()
     {
-
+        if (powerupEffect == null)
+        {
+            powerupEffect = new PowerupEffect(speed);
+        }
     }
 }

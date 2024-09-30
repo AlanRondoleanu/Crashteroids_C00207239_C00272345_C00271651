@@ -27,12 +27,14 @@ public class Powerup : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    private void OnCollisionEnter(Collision collision)
+
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.name == "ShipModel")
+        if (other.gameObject.name == "ShipModel")
         {
-            collision.gameObject.GetComponent<Ship>().ApplySpeedPowerup();
+            other.gameObject.GetComponent<Ship>().ApplySpeedPowerup();
             Destroy(this.gameObject);
         }
     }
+    
 }

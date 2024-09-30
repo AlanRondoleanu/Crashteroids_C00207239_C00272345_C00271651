@@ -2,19 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PowerupEffect
 {
     // Start is called before the first frame update
-    //int & playerSpeed;
-    //PowerupEffect(int & t_playerSpeed)
-    void Start()
-    {
+    ShipSpeed playerSpeed;
+    float speedBonus;
+    bool active = false;
+    const float speedMultiplier = 0.5f;
 
+    const float PowerupTimeout = 4;
+    float currentTime = 0;
+    public PowerupEffect(ShipSpeed t_playerSpeed)
+    {
+        playerSpeed = t_playerSpeed;
+        speedBonus = (playerSpeed.Speed * speedMultiplier);
+        playerSpeed.Speed += speedBonus;
+        active = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Update(float dt)
     {
+        currentTime += dt;
 
+        if (currentTime > PowerupTimeout)
+        {
+            playerSpeed.Speed -= speedBonus;
+            active = false;
+        }
+    }
+
+    public bool isActive()
+    {
+        return active;
     }
 }
