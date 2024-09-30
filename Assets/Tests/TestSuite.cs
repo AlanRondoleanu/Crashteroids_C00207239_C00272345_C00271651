@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using NUnit.Framework;
 using System.Collections;
+using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 public class TestSuite
 {
@@ -148,5 +150,62 @@ public class TestSuite
         yield return new WaitForSeconds(0.1f);
         Debug.Log(ship.speed);
         Assert.AreNotEqual(5, ship.speed);
+    }
+
+    [UnityTest]
+    public IEnumerator PowerUpSpawns()
+    {
+        Ship ship = game.GetShip();
+        game.SpawnPowerUp(new Vector2(0,0));
+        yield return new WaitForSeconds(0.1f);
+        Powerup powerUp = GameObject.FindAnyObjectByType<Powerup>();
+
+        Assert.IsNotNull(powerUp);
+    }
+
+    [UnityTest]
+    public IEnumerator PowerUpSpeed()
+    {
+        Ship ship = game.GetShip();
+        game.SpawnPowerUp(new Vector2(0, 0));
+        Powerup powerUp = GameObject.FindAnyObjectByType<Powerup>();
+        Transform startingPosition = powerUp.transform;
+
+        yield return new WaitForSeconds(0.1f);
+
+        Assert.AreNotEqual(powerUp.transform.position, startingPosition.position);
+    }
+
+    [UnityTest]
+    public IEnumerator PowerUpOffscreen()
+    {
+        Ship ship = game.GetShip();
+        game.SpawnPowerUp(new Vector2(0,-10));
+        Powerup powerUp = GameObject.FindAnyObjectByType<Powerup>();
+        yield return new WaitForSeconds(0.1f);
+
+        Assert.IsNull(powerUp);
+    }
+
+    [UnityTest]
+    public IEnumerator PlayerGetsBuffed()
+    {
+        Ship ship = game.GetShip();
+        float playerSpeed = ship.speed;
+        game.SpawnPowerUp(ship.transform.position);
+        yield return new WaitForSeconds(1f);
+
+        Assert.AreNotEqual(playerSpeed, ship.speed);
+    }
+
+    [UnityTest]
+    public IEnumerator PlayerBuffExpires()
+    {
+        Ship ship = game.GetShip();
+        float playerSpeed = ship.speed;
+        game.SpawnPowerUp(ship.transform.position);
+        yield return new WaitForSeconds(5f);
+
+        Assert.AreEqual(playerSpeed, ship.speed);
     }
 }
