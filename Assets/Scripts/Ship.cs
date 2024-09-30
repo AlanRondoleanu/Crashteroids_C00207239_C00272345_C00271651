@@ -132,4 +132,9 @@ public class Ship : MonoBehaviour
     {
 
     }
+
+    public void CreateShockWave()
+    {
+
+    }
 }
