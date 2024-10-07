@@ -35,6 +35,7 @@ public class Game : MonoBehaviour
 {
     public int score = 0;
     public bool isGameOver = false;
+    public float PowerupSpawnChance = 0.3f;
 
     [SerializeField] private GameObject shipModel;
     [SerializeField] private GameObject startGameButton;
@@ -99,6 +100,11 @@ public class Game : MonoBehaviour
 
     public void SpawnPowerUp(Vector3 t_location)
     {
-        Instantiate(powerUp, t_location, Quaternion.identity);
+        float spawnChance = UnityEngine.Random.Range(0f, 1f);
+
+        if (spawnChance <= PowerupSpawnChance)
+        {
+            Instantiate(powerUp, t_location, Quaternion.identity);
+        }
     }
 }

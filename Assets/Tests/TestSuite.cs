@@ -4,6 +4,7 @@ using NUnit.Framework;
 using System.Collections;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
+using System;
 
 public class TestSuite
 {
@@ -12,15 +13,16 @@ public class TestSuite
     [SetUp]
     public void Setup()
     {
-        GameObject gameGameObject =
-            Object.Instantiate(Resources.Load<GameObject>("Prefabs/Game"));
+        GameObject gameGameObject = 
+            UnityEngine.Object.Instantiate(Resources.Load<GameObject>("Prefabs/Game"));
+
         game = gameGameObject.GetComponent<Game>();
     }
 
     [TearDown]
     public void Teardown()
     {
-        Object.Destroy(game.gameObject);
+        UnityEngine.Object.Destroy(game.gameObject);
     }
 
     [UnityTest]
@@ -146,6 +148,7 @@ public class TestSuite
     public IEnumerator PowerUpSpawns()
     {
         Ship ship = game.GetShip();
+        game.PowerupSpawnChance = 1;
         game.SpawnPowerUp(new Vector2(0,0));
         yield return new WaitForSeconds(0.1f);
         Powerup powerUp = GameObject.FindAnyObjectByType<Powerup>();
@@ -154,10 +157,44 @@ public class TestSuite
     }
 
     [UnityTest]
+    public IEnumerator PowerUpSpawnsByChance()
+    {
+        int customSeed = 12345; //With this seed, 30 percent chance should always have this order of chance.
+        int[] expectedSpawnIterations = { 1, 3, 14, 24, 26, 30, 38, 39, 47, 48 };
+        int expectedIteration = 0;
+        int[] actualSpawnIterations = new int[10];
+        UnityEngine.Random.InitState(customSeed);
+
+        Powerup[] powerups = GameObject.FindObjectsOfType<Powerup>();
+
+        foreach (Powerup powerup in powerups)
+        {
+            GameObject.Destroy(powerup);
+        }
+        yield return new WaitForSeconds(0.1f);
+
+        Powerup powerUp = null;
+        for (int i = 0; i < 50; i++)
+        {
+            game.SpawnPowerUp(new Vector2(0, 0));
+            powerUp = GameObject.FindAnyObjectByType<Powerup>();
+            if (powerUp != null)
+            {
+                Assert.AreEqual(expectedSpawnIterations[expectedIteration], i);
+                expectedIteration++;
+                GameObject.DestroyImmediate(powerUp.gameObject);
+            }
+        }
+        yield return new WaitForSeconds(0.1f);
+
+    }
+
+    [UnityTest]
     public IEnumerator PowerUpSpeed()
     {
         Ship ship = game.GetShip();
         ship.enabled = false;
+        game.PowerupSpawnChance = 1;
         game.SpawnPowerUp(new Vector2(0, 0));
         Powerup powerUp = GameObject.FindAnyObjectByType<Powerup>();
         float startYPos = powerUp.transform.position.y;
@@ -171,6 +208,7 @@ public class TestSuite
     public IEnumerator PowerUpOffscreen()
     {
         Ship ship = game.GetShip();
+        game.PowerupSpawnChance = 1;
         game.SpawnPowerUp(new Vector2(0,-10));
         Powerup powerUp = GameObject.FindAnyObjectByType<Powerup>();
         yield return new WaitForSeconds(0.1f);
@@ -183,6 +221,7 @@ public class TestSuite
     {
         Ship ship = game.GetShip();
         float playerSpeed = ship.speed.Speed;
+        game.PowerupSpawnChance = 1;
         game.SpawnPowerUp(ship.transform.position);
         yield return new WaitForSeconds(1f);
         float newSpeed = game.GetShip().speed.Speed;
@@ -195,11 +234,12 @@ public class TestSuite
         game.GetSpawner().enabled = false;
         Ship ship = game.GetShip();
         float playerSpeed = ship.speed.Speed;
+        game.PowerupSpawnChance = 1;
         game.SpawnPowerUp(ship.transform.position);
         yield return new WaitForSeconds(0.1f);
         Assert.AreNotEqual(playerSpeed, ship.speed.Speed);
 
-        yield return new WaitForSeconds(7f);
+        yield return new WaitForSeconds(4.1f);
         ship = game.GetShip();
         Assert.AreEqual(playerSpeed, ship.speed.Speed);
     }
@@ -207,6 +247,7 @@ public class TestSuite
     public IEnumerator PlayerBuffDoesentStack()
     {
         Ship ship = game.GetShip();
+        game.PowerupSpawnChance = 1;
         game.SpawnPowerUp(ship.transform.position);
         yield return new WaitForSeconds(1f);
         float playerSpeed = ship.speed.Speed;
