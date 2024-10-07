@@ -51,6 +51,7 @@ public class Ship : MonoBehaviour
     [SerializeField] private GameObject explosion;
     [SerializeField] private GameObject laser;
     [SerializeField] private Transform shotSpawn;
+    [SerializeField] private GameObject ShockwaveObject;
 
     private PowerupEffect powerupEffect;
 
@@ -87,6 +88,11 @@ public class Ship : MonoBehaviour
         if (Input.GetKey(KeyCode.RightArrow))
         {
             MoveRight();
+        }
+
+        if (Input.GetKey(KeyCode.E))
+        {
+            CreateShockWave();
         }
     }
 
@@ -163,5 +169,10 @@ public class Ship : MonoBehaviour
         {
             powerupEffect = new PowerupEffect(speed);
         }
+    }
+
+    public void CreateShockWave()
+    {
+        Instantiate(ShockwaveObject);
     }
 }
