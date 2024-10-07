@@ -5552,8 +5552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e90ffdb59b5c4c49bce401341432982, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDead: 1
-  speed: 5
+  isDead: 0
   canShoot: 1
   mesh: {fileID: 23655058077935950}
   explosion: {fileID: 1293165385092864}

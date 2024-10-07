@@ -27,8 +27,9 @@ public class PowerupEffect
 
         if (currentTime > PowerupTimeout)
         {
-            playerSpeed.Speed -= speedBonus;
+             playerSpeed.Speed -= speedBonus;
             active = false;
+            currentTime = 0;
         }
     }
 

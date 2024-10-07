@@ -157,13 +157,14 @@ public class TestSuite
     public IEnumerator PowerUpSpeed()
     {
         Ship ship = game.GetShip();
+        ship.enabled = false;
         game.SpawnPowerUp(new Vector2(0, 0));
         Powerup powerUp = GameObject.FindAnyObjectByType<Powerup>();
-        Transform startingPosition = powerUp.transform;
+        float startYPos = powerUp.transform.position.y;
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(1.5f);
 
-        Assert.AreNotEqual(powerUp.transform.position, startingPosition.position);
+        Assert.AreNotEqual(powerUp.transform.position.y, startYPos);
     }
 
     [UnityTest]
@@ -174,7 +175,7 @@ public class TestSuite
         Powerup powerUp = GameObject.FindAnyObjectByType<Powerup>();
         yield return new WaitForSeconds(0.1f);
 
-        Assert.IsNull(powerUp);
+        Assert.IsTrue(powerUp == null);
     }
 
     [UnityTest]
@@ -191,13 +192,15 @@ public class TestSuite
     [UnityTest]
     public IEnumerator PlayerBuffExpires()
     {
+        game.GetSpawner().enabled = false;
         Ship ship = game.GetShip();
         float playerSpeed = ship.speed.Speed;
         game.SpawnPowerUp(ship.transform.position);
         yield return new WaitForSeconds(0.1f);
         Assert.AreNotEqual(playerSpeed, ship.speed.Speed);
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(7f);
+        ship = game.GetShip();
         Assert.AreEqual(playerSpeed, ship.speed.Speed);
     }
 

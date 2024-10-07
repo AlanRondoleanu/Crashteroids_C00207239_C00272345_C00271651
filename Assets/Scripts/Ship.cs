@@ -43,7 +43,7 @@ public class ShipSpeed
 
 public class Ship : MonoBehaviour
 {
-    public bool isDead = true;
+    public bool isDead = false;
     public ShipSpeed speed;
     public bool canShoot = true;
 
@@ -66,9 +66,6 @@ public class Ship : MonoBehaviour
 
     private void Update()
     {
-
-        Debug.Log(speed.Speed);
-
 
         if (isDead)
         {
@@ -98,7 +95,7 @@ public class Ship : MonoBehaviour
         if (powerupEffect != null)
         {
             powerupEffect.Update(Time.deltaTime);
-            if (!powerupEffect.isActive())
+             if (!powerupEffect.isActive())
             {
                 powerupEffect = null;
             }
