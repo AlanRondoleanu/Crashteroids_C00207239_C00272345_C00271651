@@ -45,6 +45,7 @@ public class Game : MonoBehaviour
     [SerializeField] private Spawner spawner;
     [SerializeField] private GameObject powerUp;
     [SerializeField] private GameObject shockwave;
+    [SerializeField] private GameObject Asteroid;
 
     private static Game instance;
     private int shockwaveCooldown = 0;
@@ -126,5 +127,9 @@ public class Game : MonoBehaviour
             return Instantiate(shockwave, t_location, Quaternion.identity);
         }
         else return null;
+    }
+    public void SpawnAsteroid(Vector3 t_location)
+    {
+        Instantiate(Asteroid, t_location, Quaternion.identity);
     }
 }
