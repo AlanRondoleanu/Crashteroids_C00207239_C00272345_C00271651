@@ -44,6 +44,7 @@ public class Game : MonoBehaviour
     [SerializeField] private GameObject titleText;
     [SerializeField] private Spawner spawner;
     [SerializeField] private GameObject powerUp;
+    [SerializeField] private GameObject Asteroid;
 
     private static Game instance;
 
@@ -106,5 +107,10 @@ public class Game : MonoBehaviour
         {
             Instantiate(powerUp, t_location, Quaternion.identity);
         }
+    }
+
+    public void SpawnAsteroid(Vector3 t_location)
+    {
+        Instantiate(Asteroid, t_location, Quaternion.identity);
     }
 }

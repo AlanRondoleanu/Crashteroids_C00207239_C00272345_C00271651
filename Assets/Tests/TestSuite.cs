@@ -259,4 +259,29 @@ public class TestSuite
         float newPlayerSpeed = ship.speed.Speed;
         Assert.AreEqual(playerSpeed, newPlayerSpeed);
     }
+
+    //asteroid explosion tests
+    public IEnumerator ExplosionSpawns()
+    {
+        Ship ship = game.GetShip();
+        game.SpawnAsteroid(ship.gameObject.transform.position);//should spawn on player destroying both
+
+        ExplosionGameObj explosion = GameObject.FindAnyObjectByType<ExplosionGameObj>();//explosion game object
+
+        yield return new WaitForSeconds(0.1f);
+
+        Assert.IsNotNull(explosion);
+    }
+
+    public IEnumerator ExplosionDespawns()
+    {
+        Ship ship = game.GetShip();
+        game.SpawnAsteroid(ship.gameObject.transform.position);
+
+        ExplosionGameObj explosion = GameObject.FindAnyObjectByType<ExplosionGameObj>();
+
+        yield return new WaitForSeconds(3f);//explosion shouldnt exist after 3 seconds
+
+        Assert.IsNull(explosion);
+    }
 }
