@@ -146,6 +146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   score: 0
   isGameOver: 0
+  PowerupSpawnChance: 0.3
   shipModel: {fileID: 1724638828557662}
   startGameButton: {fileID: 1213939401500494}
   gameOverText: {fileID: 114220453995209146}
@@ -153,6 +154,8 @@ MonoBehaviour:
   titleText: {fileID: 2860059605129257009}
   spawner: {fileID: 114967116146624472}
   powerUp: {fileID: 3024241309237130633, guid: ce614361ef220df45b07cfc2b5bd177d, type: 3}
+  shockwave: {fileID: 5669680872990075978, guid: 7988a48f709292d43ba49995e6132f59,
+    type: 3}
 --- !u!1 &1185553351460270
 GameObject:
   m_ObjectHideFlags: 0
@@ -5558,6 +5561,7 @@ MonoBehaviour:
   explosion: {fileID: 1293165385092864}
   laser: {fileID: 1729882074787140}
   shotSpawn: {fileID: 4579061690449084}
+  ShockwaveObject: {fileID: 0}
 --- !u!82 &1378375467101981761
 AudioSource:
   m_ObjectHideFlags: 0

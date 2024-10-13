@@ -30,6 +30,7 @@
 
 using System.Collections;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 public class ShipSpeed
 {
@@ -58,6 +59,7 @@ public class Ship : MonoBehaviour
     private AudioSource audioSource;
     private readonly float maxLeft = 40;
     private readonly float maxRight = -40;
+    private int shockwaveCooldown = 0;
 
     private void Awake()
     {
@@ -67,6 +69,10 @@ public class Ship : MonoBehaviour
 
     private void Update()
     {
+        if(shockwaveCooldown > 0)
+        {
+            shockwaveCooldown--;
+        }
 
         if (isDead)
         {
@@ -101,7 +107,7 @@ public class Ship : MonoBehaviour
         if (powerupEffect != null)
         {
             powerupEffect.Update(Time.deltaTime);
-             if (!powerupEffect.isActive())
+            if (!powerupEffect.isActive())
             {
                 powerupEffect = null;
             }
@@ -173,6 +179,10 @@ public class Ship : MonoBehaviour
 
     public void CreateShockWave()
     {
-        Instantiate(ShockwaveObject);
+        if(shockwaveCooldown <=  0)
+        {
+            shockwaveCooldown = 300;
+            Instantiate(ShockwaveObject, this.transform.position, Quaternion.identity);
+        }
     }
 }

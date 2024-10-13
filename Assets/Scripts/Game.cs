@@ -44,8 +44,10 @@ public class Game : MonoBehaviour
     [SerializeField] private GameObject titleText;
     [SerializeField] private Spawner spawner;
     [SerializeField] private GameObject powerUp;
+    [SerializeField] private GameObject shockwave;
 
     private static Game instance;
+    private int shockwaveCooldown = 0;
 
     private void Start()
     {
@@ -54,6 +56,14 @@ public class Game : MonoBehaviour
         gameOverText.enabled = false;
         scoreText.enabled = false;
         startGameButton.SetActive(true);
+    }
+
+    private void Update()
+    {
+        if(shockwaveCooldown > 0)
+        {
+            shockwaveCooldown--;
+        }
     }
 
     public static void GameOver()
@@ -106,5 +116,15 @@ public class Game : MonoBehaviour
         {
             Instantiate(powerUp, t_location, Quaternion.identity);
         }
+    }
+
+    public GameObject SpawnShockwave(Vector3 t_location)
+    {
+        if(shockwaveCooldown <= 0)
+        {
+            shockwaveCooldown = 300;
+            return Instantiate(shockwave, t_location, Quaternion.identity);
+        }
+        else return null;
     }
 }
