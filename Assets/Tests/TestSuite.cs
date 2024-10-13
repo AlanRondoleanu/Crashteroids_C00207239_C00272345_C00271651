@@ -260,6 +260,101 @@ public class TestSuite
         Assert.AreEqual(playerSpeed, newPlayerSpeed);
     }
 
+    // Shockwave
+
+    [UnityTest]
+    public IEnumerator ShockwaveSpawns()
+    {
+        Ship ship = game.GetShip();
+        game.SpawnShockwave(ship.transform.position);
+        yield return new WaitForSeconds(0.1f);
+
+        Shockwave shockwave = GameObject.FindAnyObjectByType<Shockwave>();
+
+        Assert.IsNotNull(shockwave);
+    }
+
+    [UnityTest]
+    public IEnumerator ShockwaveExpires()
+    {
+        Ship ship = game.GetShip();
+        game.SpawnShockwave(ship.transform.position);
+        yield return new WaitForSeconds(0.1f);
+        Shockwave shockwave = GameObject.FindAnyObjectByType<Shockwave>();
+
+        Assert.IsNotNull(shockwave);
+
+        yield return new WaitForSeconds(2.1f);
+        Assert.IsTrue(shockwave == null);
+    }
+
+    [UnityTest]
+    public IEnumerator ShockwaveSizeGrows()
+    {
+        bool[] sizeIncreased = { false, false, false };
+        float previousShockwaveSize = 0;
+        Ship ship = game.GetShip();
+        game.SpawnShockwave(ship.transform.position);
+        yield return new WaitForSeconds(0.1f);
+        Shockwave shockwave = GameObject.FindAnyObjectByType<Shockwave>();
+        previousShockwaveSize = shockwave.transform.localScale.x;
+
+        yield return new WaitForSeconds(0.1f);
+        if (previousShockwaveSize < shockwave.transform.localScale.x)
+        {
+            sizeIncreased[0] = true;
+        }
+        previousShockwaveSize = shockwave.transform.localScale.x;
+        yield return new WaitForSeconds(0.1f);
+        if (previousShockwaveSize < shockwave.transform.localScale.x)
+        {
+            sizeIncreased[1] = true;
+        }
+
+        previousShockwaveSize = shockwave.transform.localScale.x;
+        yield return new WaitForSeconds(0.1f);
+        if (previousShockwaveSize < shockwave.transform.localScale.x)
+        {
+            sizeIncreased[2] = true;
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            Assert.IsTrue(sizeIncreased[i]);
+        }
+    }
+
+    [UnityTest]
+    public IEnumerator ShockwaveDestroysAsteroid()
+    {
+        Ship ship = game.GetShip();
+        ship.transform.position = new Vector3(-1, -2, 0);
+        Asteroid asteroid = game.GetSpawner().SpawnAsteroid().GetComponent<Asteroid>();
+        asteroid.speed = 0;
+        asteroid.transform.position = Vector3.zero;
+        yield return new WaitForSeconds(0.1f);
+
+        game.SpawnShockwave(ship.transform.position);
+        yield return new WaitForSeconds(1f);
+        UnityEngine.Assertions.Assert.IsNull(asteroid);
+    }
+
+    [UnityTest]
+    public IEnumerator ShockwaveCooldown()
+    {
+        GameObject shockwave1;
+        GameObject shockwave2;
+        Ship ship = game.GetShip();
+
+        yield return new WaitForSeconds(0.1f);
+        shockwave1 = game.SpawnShockwave(ship.transform.position);
+        yield return new WaitForSeconds(0.1f);
+        shockwave2 = game.SpawnShockwave(ship.transform.position);
+
+        Assert.IsNotNull(shockwave1);
+        Assert.IsNull(shockwave2);
+    }
+
     //asteroid explosion tests
     public IEnumerator ExplosionSpawns()
     {

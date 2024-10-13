@@ -217,6 +217,8 @@ MonoBehaviour:
   explosion: {fileID: 1731500308911712}
   laser: {fileID: 0}
   shotSpawn: {fileID: 4759812560425686}
+  ShockwaveObject: {fileID: 5669680872990075978, guid: 7988a48f709292d43ba49995e6132f59,
+    type: 3}
 --- !u!1 &1731500308911712
 GameObject:
   m_ObjectHideFlags: 0

@@ -30,6 +30,7 @@
 
 using System.Collections;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 public class ShipSpeed
 {
@@ -51,12 +52,14 @@ public class Ship : MonoBehaviour
     [SerializeField] private GameObject explosion;
     [SerializeField] private GameObject laser;
     [SerializeField] private Transform shotSpawn;
+    [SerializeField] private GameObject ShockwaveObject;
 
     private PowerupEffect powerupEffect;
 
     private AudioSource audioSource;
     private readonly float maxLeft = 40;
     private readonly float maxRight = -40;
+    private int shockwaveCooldown = 0;
 
     private void Awake()
     {
@@ -66,6 +69,10 @@ public class Ship : MonoBehaviour
 
     private void Update()
     {
+        if(shockwaveCooldown > 0)
+        {
+            shockwaveCooldown--;
+        }
 
         if (isDead)
         {
@@ -88,6 +95,11 @@ public class Ship : MonoBehaviour
         {
             MoveRight();
         }
+
+        if (Input.GetKey(KeyCode.E))
+        {
+            CreateShockWave();
+        }
     }
 
     private void updatePowerup()
@@ -95,7 +107,7 @@ public class Ship : MonoBehaviour
         if (powerupEffect != null)
         {
             powerupEffect.Update(Time.deltaTime);
-             if (!powerupEffect.isActive())
+            if (!powerupEffect.isActive())
             {
                 powerupEffect = null;
             }
@@ -162,6 +174,15 @@ public class Ship : MonoBehaviour
         if (powerupEffect == null)
         {
             powerupEffect = new PowerupEffect(speed);
+        }
+    }
+
+    public void CreateShockWave()
+    {
+        if(shockwaveCooldown <=  0)
+        {
+            shockwaveCooldown = 300;
+            Instantiate(ShockwaveObject, this.transform.position, Quaternion.identity);
         }
     }
 }
