@@ -361,7 +361,7 @@ public class TestSuite
         Ship ship = game.GetShip();
         game.SpawnAsteroid(ship.gameObject.transform.position);//should spawn on player destroying both
 
-        ExplosionGameObj explosion = GameObject.FindAnyObjectByType<ExplosionGameObj>();//explosion game object
+        Explosion explosion = GameObject.FindAnyObjectByType<Explosion>();//explosion game object
 
         yield return new WaitForSeconds(0.1f);
 
@@ -373,7 +373,7 @@ public class TestSuite
         Ship ship = game.GetShip();
         game.SpawnAsteroid(ship.gameObject.transform.position);
 
-        ExplosionGameObj explosion = GameObject.FindAnyObjectByType<ExplosionGameObj>();
+        Explosion explosion = GameObject.FindAnyObjectByType<Explosion>();
 
         yield return new WaitForSeconds(3f);//explosion shouldnt exist after 3 seconds
 
