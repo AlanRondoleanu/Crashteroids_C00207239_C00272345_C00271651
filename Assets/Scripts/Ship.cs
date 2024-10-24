@@ -30,29 +30,50 @@
 
 using System.Collections;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
+
+public class ShipSpeed
+{
+    public float Speed { get; set; }
+
+    public ShipSpeed(float speed)
+    {
+        Speed = speed;
+    }
+}
 
 public class Ship : MonoBehaviour
 {
-    public bool isDead = true;
-    public float speed = 1;
+    public bool isDead = false;
+    public ShipSpeed speed;
     public bool canShoot = true;
 
     [SerializeField] private  MeshRenderer mesh;
     [SerializeField] private GameObject explosion;
     [SerializeField] private GameObject laser;
     [SerializeField] private Transform shotSpawn;
+    [SerializeField] private GameObject ShockwaveObject;
+
+    private PowerupEffect powerupEffect;
 
     private AudioSource audioSource;
     private readonly float maxLeft = 40;
     private readonly float maxRight = -40;
+    private int shockwaveCooldown = 0;
 
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        speed = new ShipSpeed(1);
     }
 
     private void Update()
     {
+        if(shockwaveCooldown > 0)
+        {
+            shockwaveCooldown--;
+        }
+
         if (isDead)
         {
             return;
@@ -63,6 +84,8 @@ public class Ship : MonoBehaviour
             ShootLaser();
         }
 
+        updatePowerup();
+
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             MoveLeft();
@@ -72,6 +95,24 @@ public class Ship : MonoBehaviour
         {
             MoveRight();
         }
+
+        if (Input.GetKey(KeyCode.E))
+        {
+            CreateShockWave();
+        }
+    }
+
+    private void updatePowerup()
+    {
+        if (powerupEffect != null)
+        {
+            powerupEffect.Update(Time.deltaTime);
+            if (!powerupEffect.isActive())
+            {
+                powerupEffect = null;
+            }
+        }
+
     }
 
     public void ShootLaser()
@@ -98,7 +139,7 @@ public class Ship : MonoBehaviour
 
     public void MoveLeft()
     {
-        transform.Translate(-Vector3.left * Time.deltaTime * speed);
+        transform.Translate(-Vector3.left * Time.deltaTime * speed.Speed);
         if (transform.localPosition.x > maxLeft)
         {
             transform.localPosition = new Vector3(maxLeft, 0, 0);
@@ -107,7 +148,7 @@ public class Ship : MonoBehaviour
 
     public void MoveRight()
     {
-        transform.Translate(-Vector3.right * Time.deltaTime * speed);
+        transform.Translate(-Vector3.right * Time.deltaTime * speed.Speed);
         if (transform.localPosition.x < maxRight)
         {
              transform.localPosition = new Vector3(maxRight, 0, 0);
@@ -126,5 +167,22 @@ public class Ship : MonoBehaviour
         explosion.SetActive(false);
         mesh.enabled = true;
         isDead = false;
+    }
+
+    public void ApplySpeedPowerup()
+    {
+        if (powerupEffect == null)
+        {
+            powerupEffect = new PowerupEffect(speed);
+        }
+    }
+
+    public void CreateShockWave()
+    {
+        if(shockwaveCooldown <=  0)
+        {
+            shockwaveCooldown = 300;
+            Instantiate(ShockwaveObject, this.transform.position, Quaternion.identity);
+        }
     }
 }

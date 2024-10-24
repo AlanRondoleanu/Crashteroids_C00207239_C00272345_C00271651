@@ -36,6 +36,8 @@ public class Asteroid : MonoBehaviour
     private readonly float maxY = -5;
     public GameObject explosion;
 
+    [SerializeField] private GameObject ExplosionObj;
+
     private void Update()
     {
         Move();
@@ -59,8 +61,16 @@ public class Asteroid : MonoBehaviour
         }
     }
 
+<<<<<<< HEAD
     private void OnDestroy()
     {
         Instantiate(explosion, gameObject.transform.position, Quaternion.identity);
+=======
+    public GameObject spawnExplosion()
+    {
+        GameObject explosion = Instantiate(ExplosionObj);
+        explosion.SetActive(true);
+        return explosion;
+>>>>>>> origin/main
     }
 }

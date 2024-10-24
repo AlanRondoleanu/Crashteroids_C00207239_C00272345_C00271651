@@ -35,6 +35,7 @@ public class Game : MonoBehaviour
 {
     public int score = 0;
     public bool isGameOver = false;
+    public float PowerupSpawnChance = 0.3f;
 
     [SerializeField] private GameObject shipModel;
     [SerializeField] private GameObject startGameButton;
@@ -42,8 +43,12 @@ public class Game : MonoBehaviour
     [SerializeField] private Text scoreText;
     [SerializeField] private GameObject titleText;
     [SerializeField] private Spawner spawner;
+    [SerializeField] private GameObject powerUp;
+    [SerializeField] private GameObject shockwave;
+    [SerializeField] private GameObject Asteroid;
 
     private static Game instance;
+    private int shockwaveCooldown = 0;
 
     private void Start()
     {
@@ -52,6 +57,14 @@ public class Game : MonoBehaviour
         gameOverText.enabled = false;
         scoreText.enabled = false;
         startGameButton.SetActive(true);
+    }
+
+    private void Update()
+    {
+        if(shockwaveCooldown > 0)
+        {
+            shockwaveCooldown--;
+        }
     }
 
     public static void GameOver()
@@ -79,10 +92,11 @@ public class Game : MonoBehaviour
         gameOverText.enabled = false;
     }
 
-    public static void AsteroidDestroyed()
+    public static void AsteroidDestroyed(Vector3 position)
     {
         instance.score++;
         instance.scoreText.text = $"Score: {instance.score}";
+        GameObject.FindObjectOfType<Game>().SpawnPowerUp(position);
     }
 
     public Ship GetShip()
@@ -93,5 +107,29 @@ public class Game : MonoBehaviour
     public Spawner GetSpawner()
     {
         return spawner.GetComponent<Spawner>();
+    }
+
+    public void SpawnPowerUp(Vector3 t_location)
+    {
+        float spawnChance = UnityEngine.Random.Range(0f, 1f);
+
+        if (spawnChance <= PowerupSpawnChance)
+        {
+            Instantiate(powerUp, t_location, Quaternion.identity);
+        }
+    }
+
+    public GameObject SpawnShockwave(Vector3 t_location)
+    {
+        if(shockwaveCooldown <= 0)
+        {
+            shockwaveCooldown = 300;
+            return Instantiate(shockwave, t_location, Quaternion.identity);
+        }
+        else return null;
+    }
+    public void SpawnAsteroid(Vector3 t_location)
+    {
+        Instantiate(Asteroid, t_location, Quaternion.identity);
     }
 }

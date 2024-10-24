@@ -122,7 +122,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &1791806027
+--- !u!1001 &807280985
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -135,20 +135,16 @@ PrefabInstance:
       value: Game
       objectReference: {fileID: 0}
     - target: {fileID: 4055792686439916, guid: 3befbaa1b3b83f243a244d723a27c16e, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4055792686439916, guid: 3befbaa1b3b83f243a244d723a27c16e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -4.49092
       objectReference: {fileID: 0}
     - target: {fileID: 4055792686439916, guid: 3befbaa1b3b83f243a244d723a27c16e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -2.1485355
       objectReference: {fileID: 0}
     - target: {fileID: 4055792686439916, guid: 3befbaa1b3b83f243a244d723a27c16e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -3.4107294
       objectReference: {fileID: 0}
     - target: {fileID: 4055792686439916, guid: 3befbaa1b3b83f243a244d723a27c16e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -178,6 +174,24 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114338881368631318, guid: 3befbaa1b3b83f243a244d723a27c16e,
+        type: 3}
+      propertyPath: shockwave
+      value: 
+      objectReference: {fileID: 5669680872990075978, guid: 7988a48f709292d43ba49995e6132f59,
+        type: 3}
+    - target: {fileID: 114885424819564724, guid: 3befbaa1b3b83f243a244d723a27c16e,
+        type: 3}
+      propertyPath: Shockwave
+      value: 
+      objectReference: {fileID: 5669680872990075978, guid: 7988a48f709292d43ba49995e6132f59,
+        type: 3}
+    - target: {fileID: 114885424819564724, guid: 3befbaa1b3b83f243a244d723a27c16e,
+        type: 3}
+      propertyPath: ShockwaveObject
+      value: 
+      objectReference: {fileID: 5669680872990075978, guid: 7988a48f709292d43ba49995e6132f59,
+        type: 3}
     - target: {fileID: 224306037993809488, guid: 3befbaa1b3b83f243a244d723a27c16e,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -291,4 +305,8 @@ LightingSettings:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+<<<<<<< HEAD
   - {fileID: 1791806027}
+=======
+  - {fileID: 807280985}
+>>>>>>> origin/main
